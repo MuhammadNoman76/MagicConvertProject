@@ -306,7 +306,7 @@ def main():
             help="Supported formats: PNG, JPG, JPEG, PDF"
         )
         
-        generate_button = st.button("🚀 Generate Bill Analysis", use_container_width=True)
+        generate_button = st.button("🚀 Generate Bill Analysis")
         
         if generate_button:
             if not openrouter_token:
