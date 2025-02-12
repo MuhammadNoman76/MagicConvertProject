@@ -7,6 +7,8 @@ import logging
 from pathlib import Path
 import tempfile
 import os
+import pytesseract
+pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
 
 # Set up logging
 logging.basicConfig(
