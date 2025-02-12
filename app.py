@@ -183,130 +183,86 @@ Provide only the formatted Markdown output without any explanations or additiona
             return BillResponse(success=False, error=str(e))
 
 def main():
-    """Streamlit UI implementation with enhanced design."""
     st.set_page_config(
         page_title="Smart Bill Processor",
-        page_icon="📑",
+        page_icon="📄",
         layout="wide",
         initial_sidebar_state="expanded"
     )
 
-    # Enhanced Custom CSS
+    # Fixed CSS for proper dark/light mode theming
     st.markdown("""
         <style>
-        .main {
-            padding: 2rem;
-            background-color: #f5f7f9;
+        /* Base styles */
+        body {
+            --primary-color: #0d6efd;
+            --background-color: #ffffff;
+            --text-color: #000000;
+            --secondary-background: #f8f9fa;
+            --border-color: #e0e0e0;
         }
-        
-        .stTitle {
-            color: #1E3D59;
-            font-size: 2.5rem !important;
-            font-weight: 700 !important;
-            margin-bottom: 1.5rem !important;
-            text-align: center;
+
+        /* Dark mode overrides */
+        @media (prefers-color-scheme: dark) {
+            body {
+                --background-color: #0e1117;
+                --text-color: #ffffff;
+                --secondary-background: #1e1e1e;
+                --border-color: #464646;
+            }
         }
-        
-        .css-1d391kg {
-            background-color: #ffffff;
-            padding: 2rem 1rem;
-            border-right: 1px solid #e0e0e0;
+
+        [data-testid="stAppViewContainer"] {
+            background-color: var(--background-color);
+            color: var(--text-color);
         }
-        
-        .sidebar .sidebar-content {
-            background-color: #ffffff;
+
+        [data-testid="stSidebar"] {
+            background-color: var(--secondary-background) !important;
         }
-        
-        .upload-container {
-            background-color: #ffffff;
+
+        /* Text elements */
+        h1, h2, h3, h4, h5, h6, p, div, span, pre, label {
+            color: var(--text-color) !important;
         }
-        
-        .stFileUploader {
-            border: 2px dashed #6c757d;
+
+        /* Containers */
+        .upload-container, .result-container {
             border-radius: 10px;
-            padding: 1.5rem;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-        
-        .stFileUploader:hover {
-            border-color: #007bff;
-            background-color: #f8f9fa;
-        }
-        
-        .result-container {
-            background-color: #ffffff;
-            border-radius: 15px;
             padding: 1rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
             margin: 1rem 0;
-            display: flex; /* This enables flexbox */
-            align-items: center; /* Vertically centers the content */
-            justify-content: center; /* Horizontally centers the content */
+            background-color: var(--secondary-background);
+            border: 1px solid var(--border-color);
         }
 
-        
-        .stButton > button {
-            width: 100%;
-            border-radius: 8px;
-            padding: 0.5rem 1rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            margin: 1rem 0;
-        }
-        
-        .stButton > button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        
-        .download-btn {
-            background-color: #28a745;
-            color: white;
-            border: none;
-            margin: 0.5rem 0;
-        }
-        
-        .stProgress > div > div {
-            background-color: #17a2b8;
-        }
-        
-        .footer {
-            text-align: center;
-            padding: 2rem 0;
-            margin-top: 2rem;
-            border-top: 1px solid #dee2e6;
-        }
-        
-        .stMarkdown a {
-            color: #007bff;
-            text-decoration: none;
-            transition: color 0.2s ease;
-        }
-        
-        .stMarkdown a:hover {
-            color: #0056b3;
-            text-decoration: underline;
+        /* File uploader */
+        .stFileUploader>div {
+            background-color: var(--secondary-background) !important;
+            border: 2px dashed var(--border-color) !important;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        /* Buttons */
+        .stButton>button {
+            background-color: var(--primary-color) !important;
+            color: white !important;
+            border: none !important;
         }
-        
-        .fadeIn {
-            animation: fadeIn 0.5s ease-in;
+
+        /* Tables */
+        table {
+            background-color: var(--secondary-background) !important;
+            color: var(--text-color) !important;
         }
-        
-        @media (max-width: 768px) {
-            .main {
-                padding: 1rem;
-            }
-            
-            .stTitle {
-                font-size: 2rem !important;
-            }
-        
+
+        /* Code blocks */
+        pre code {
+            background-color: var(--secondary-background) !important;
+            border: 1px solid var(--border-color) !important;
+        }
+
+        /* Additional spacing */
+        .stMarkdown {
+            margin: 1rem 0;
         }
         </style>
     """, unsafe_allow_html=True)
@@ -314,8 +270,8 @@ def main():
     # App Header
     st.markdown("""
         <div class='fadeIn' style='text-align: center;'>
-            <h1 style='color: #1E3D59; font-size: 2.5rem; font-weight: 700;'>📑 Smart Bill Processor</h1>
-            <p style='font-size: 1.2rem; color: #6c757d; margin-bottom: 2rem;'>
+            <h1>📑 Smart Bill Processor</h1>
+            <p style='font-size: 1.2rem; margin-bottom: 2rem;'>
                 Transform your bills into beautifully structured documents instantly
             </p>
         </div>
@@ -325,11 +281,10 @@ def main():
     with st.sidebar:
         st.markdown("""
             <div style='text-align: center; margin-bottom: 2rem;'>
-                <h2 style='color: #1E3D59;'>⚙️ Settings & Upload</h2>
+                <h2>⚙️ Settings & Upload</h2>
             </div>
         """, unsafe_allow_html=True)
         
-        # API Token Input
         openrouter_token = st.text_input(
             "OpenRouter API Token",
             type="password",
@@ -339,10 +294,9 @@ def main():
         
         st.markdown("<div style='margin: 1.5rem 0;'><hr></div>", unsafe_allow_html=True)
         
-        # File Upload Section
         st.markdown("""
             <div class='upload-container'>
-                <h3 style='color: #1E3D59;'>📤 Upload Bill</h3>
+                <h3>📤 Upload Bill</h3>
             </div>
         """, unsafe_allow_html=True)
         
@@ -352,7 +306,6 @@ def main():
             help="Supported formats: PNG, JPG, JPEG, PDF"
         )
         
-        # Generate Button with Validation
         generate_button = st.button("🚀 Generate Bill Analysis", type="primary", use_container_width=True)
         
         if generate_button:
@@ -382,11 +335,10 @@ def main():
         
         st.markdown("<div style='margin: 1.5rem 0;'><hr></div>", unsafe_allow_html=True)
         
-        # Quick Guide
         st.markdown("""
             <div style='margin-top: 1rem;'>
-                <h4 style='color: #1E3D59;'>📋 Quick Guide</h4>
-                <ol style='margin-left: 1rem; color: #6c757d;'>
+                <h4>📋 Quick Guide</h4>
+                <ol style='margin-left: 1rem;'>
                     <li>Enter your API token</li>
                     <li>Upload your bill image</li>
                     <li>Click Generate</li>
@@ -398,16 +350,14 @@ def main():
     # Main Content Area
     st.markdown("""
         <div class='result-container'>
-            <h3 style='color: #1E3D59;'>📋 Processed Result</h3>
+            <h3>📋 Processed Result</h3>
         </div>
     """, unsafe_allow_html=True)
     
     if 'markdown_result' in st.session_state:
-        # Display the result
         with st.container():
             st.markdown(st.session_state.markdown_result)
             
-            # Download buttons in a centered layout
             col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
             
             with col2:
@@ -421,9 +371,8 @@ def main():
                     use_container_width=True
                 )
     else:
-        # Placeholder when no result is available
         st.markdown("""
-            <div style='text-align: center; padding: 3rem; color: #6c757d; background-color: #f8f9fa; border-radius: 10px;'>
+            <div class='placeholder-content'>
                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16" style="margin-bottom: 1rem;">
                     <path d="M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm5.5 1.5v2a1 1 0 0 0 1 1h2l-3-3z"/>
                 </svg>
@@ -435,7 +384,7 @@ def main():
     # Footer
     st.markdown("""
         <div class='footer'>
-            <p style='color: #6c757d;'>
+            <p>
                 Made with ❤️ by Muhammad Noman<br>
                 <a href="https://github.com/MuhammadNoman76/MagicConvertProject" target="_blank">GitHub</a> | 
                 <a href="https://pypi.org/project/MagicConvert/" target="_blank">Documentation</a>
