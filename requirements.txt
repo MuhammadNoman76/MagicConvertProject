@@ -2,3 +2,4 @@ streamlit==1.17.0
 requests==2.26.0
 typing==3.7.4
 MagicConvert==0.1.0
+altair==4.0.0
