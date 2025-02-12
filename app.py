@@ -5,12 +5,8 @@ from dataclasses import dataclass
 from abc import ABC, abstractmethod
 import logging
 from pathlib import Path
-import markdown
-import pdfkit
 import tempfile
 import os
-from PIL import Image
-import io
 
 # Set up logging
 logging.basicConfig(
@@ -223,10 +219,6 @@ def main():
         
         .upload-container {
             background-color: #ffffff;
-            border-radius: 15px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            margin-bottom: 1.5rem;
         }
         
         .stFileUploader {
@@ -314,10 +306,7 @@ def main():
             .stTitle {
                 font-size: 2rem !important;
             }
-            
-            .upload-container, .result-container {
-                padding: 1rem;
-            }
+        
         }
         </style>
     """, unsafe_allow_html=True)
@@ -353,7 +342,7 @@ def main():
         # File Upload Section
         st.markdown("""
             <div class='upload-container'>
-                <h3 style='color: #1E3D59; margin-bottom: 1rem;'>📤 Upload Bill</h3>
+                <h3 style='color: #1E3D59;'>📤 Upload Bill</h3>
             </div>
         """, unsafe_allow_html=True)
         
